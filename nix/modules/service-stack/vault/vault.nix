@@ -9,7 +9,7 @@ in
     
     services.vault = {
       enable = true;
-      package = pkgs.vault;
+      package = pkgs.vault-bin;
 
       # 1. ADDRESS
       address = "0.0.0.0:${toString cfg.port}";
@@ -37,6 +37,8 @@ in
         ${cfg.extraConfig}
       '';
     };
+
+    environment.systemPackages = [ pkgs.vault-bin ];
 
     systemd.tmpfiles.rules = [ 
       "d ${cfg.storagePath} 0700 vault vault - -"
