@@ -22,6 +22,13 @@ in
       # API address
       address = "0.0.0.0:${toString cfg.port}";
 
+      storageBackend = "raft";
+
+      storageConfig = ''
+        path    = "${cfg.storagePath}"
+        node_id = "${config.networking.hostName}"
+      '';
+
       # HCL Config.
       extraConfig = ''
         ui = true
@@ -29,11 +36,6 @@ in
         listener "tcp" {
           address     = "0.0.0.0:${toString cfg.port}"
           ${tlsString}
-        }
-
-        storage "raft" {
-          path    = "${cfg.storagePath}"
-          node_id = "${config.networking.hostName}"
         }
 
         api_addr = "http${if cfg.tls.enable then "s" else ""}://127.0.0.1:${toString cfg.port}"
@@ -50,7 +52,7 @@ in
       "d /var/lib/vault-storage/certs 0700 vault vault - -"
 
     ];
-    
+
     networking.firewall.allowedTCPPorts = [ cfg.port cfg.clusterPort ];
   };
 }
