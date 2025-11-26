@@ -44,7 +44,13 @@ in
       '';
     };
 
-    systemd.tmpfiles.rules = [ "d ${cfg.storagePath} 0700 vault vault - -" ];
+    systemd.tmpfiles.rules = [ 
+
+      "d ${cfg.storagePath} 0700 vault vault - -"
+      "d /var/lib/vault-storage/certs 0700 vault vault - -"
+
+    ];
+    
     networking.firewall.allowedTCPPorts = [ cfg.port cfg.clusterPort ];
   };
 }

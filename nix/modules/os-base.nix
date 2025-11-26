@@ -44,7 +44,14 @@ with types;
     # Only allow to change users and groups through NixOS config.
     users.mutableUsers = false;
 
-    
+    users.users.admin = {
+      isNormalUser = true;
+      description = "System Administrator";
+      extraGroups = [ "wheel" "systemd-journal" ]; # 'wheel' per sudo
+      openssh.authorizedKeys.keys = [
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOsM1MtOMasHl9p6MJ9ABvHThoaYzLCJlP5VjyA81f9/"
+      ];
+    };
 
     # Let wheel users run `sudo` without a password.
     security.sudo.wheelNeedsPassword = false;
