@@ -18,12 +18,8 @@ in
     services.vault = {
       enable = true;
       package = pkgs.vault;
-      
-      # API address
-      address = "0.0.0.0:${toString cfg.port}";
 
       storageBackend = "raft";
-
       storageConfig = ''
         path    = "${cfg.storagePath}"
         node_id = "${config.networking.hostName}"
@@ -32,6 +28,7 @@ in
       # HCL Config.
       extraConfig = ''
         ui = true
+        disable_mlock = true
         
         listener "tcp" {
           address     = "0.0.0.0:${toString cfg.port}"
@@ -41,7 +38,7 @@ in
         api_addr = "http${if cfg.tls.enable then "s" else ""}://127.0.0.1:${toString cfg.port}"
         cluster_addr = "http${if cfg.tls.enable then "s" else ""}://127.0.0.1:${toString cfg.clusterPort}"
 
-        # Qui iniettiamo eventuale config extra definita nel nodo
+        # Config injection
         ${cfg.extraConfig}
       '';
     };
