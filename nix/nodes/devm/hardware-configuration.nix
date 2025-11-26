@@ -12,6 +12,7 @@
   boot.initrd.kernelModules = [ ];
   boot.kernelModules = [ ];
   boot.extraModulePackages = [ ];
+  
 
   fileSystems."/" =
     { device = "/dev/disk/by-label/nixos";

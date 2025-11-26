@@ -12,6 +12,9 @@ in {
 
   networking.hostName = "vaultsrv-01";
 
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.efi.canTouchEfiVariables = true;
+
   fileSystems."${vault-data-mount-dir}" = {
     device = "/dev/disk/by-partlabel/data";
     fsType = "ext4";
