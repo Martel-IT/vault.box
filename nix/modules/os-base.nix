@@ -1,6 +1,32 @@
 { config, lib, pkgs, ... }:
 
+with lib;
+with types;
+
 {
+
+  options = {
+    vaultbox.base.enable = mkOption {
+      type = bool;
+      default = false;
+      description = ''
+        Enable it to install this system base.
+      '';
+    };
+    vaultbox.base.cli-tools = mkOption {
+      type = listOf package;
+      default = [];
+      description = ''
+        CLI tools to install system-wide.
+      '';
+    };
+  };
+
+  config = let
+    enabled = config.vaultbox.base.enable;
+    tools = config.vaultbox.base.cli-tools;
+  in (lib.mkIf enabled
+  {
     # Enable Flakes.
     nix = {
       package = pkgs.nixFlakes;
@@ -21,4 +47,5 @@
     # Let wheel users run `sudo` without a password.
     security.sudo.wheelNeedsPassword = false;
 
+  });
 }

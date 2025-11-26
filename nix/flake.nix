@@ -18,7 +18,7 @@
     pkgs = build (import ./pkgs/mkSysOutput.nix);
 
     overlay = final: prev: {
-      odbox = pkgs.packages.${prev.system} or {};
+      vaultbox = pkgs.packages.${prev.system} or {};
     };
 
     modules = {

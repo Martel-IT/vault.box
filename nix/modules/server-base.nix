@@ -18,6 +18,10 @@
 with lib;
 with types;
 
+let
+  cfg = config.vaultbox.services.vault;
+in
+
 {
 
   options = {
@@ -48,13 +52,12 @@ with types;
     # Set up a firewall to let in only SSH and HTTP traffic.
     networking.firewall = {
       enable = true;
-      allowedTCPPorts = [ ];
+      allowedTCPPorts = [ cfg.port cfg.clusterPort ];
     };
 
     # Bring in our Vault service stack.
-    vaultbox.service-stack = {
+    vaultbox.services.vault = {
       enable = true;
-      vault-db-name = "Vault_martel_14";
     };
   });
 
