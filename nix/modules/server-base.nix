@@ -34,7 +34,7 @@ in
       settings = {
         PasswordAuthentication = false;
         PubkeyAuthentication = true;
-        PermitRootLogin = lib.mkForce "no";
+        PermitRootLogin = "no";
         X11Forwarding = false;
         MaxAuthTries = 3;
         ClientAliveInterval = 300;

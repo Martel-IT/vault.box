@@ -1,7 +1,6 @@
-{ config, modulesPath, pkgs, ... }:
+{ config, modulesPath, pkgs, lib, ... }:
 let
   
-  backup-mount-dir = "/backup";
   vault-data-mount-dir = "/var/lib/vault-storage";
 
 in {
@@ -12,11 +11,6 @@ in {
   system.stateVersion = "25.05";
 
   networking.hostName = "vaultsrv-01";
-
-  fileSystems."${backup-mount-dir}" = {
-    device = "/dev/disk/by-partlabel/backup";                  # (3)
-    fsType = "ext4";
-  };
 
   fileSystems."${vault-data-mount-dir}" = {
     device = "/dev/disk/by-partlabel/data";
@@ -34,6 +28,11 @@ in {
       "nixpkgs"
       "-L" # print build logs
     ];
+  };
+
+  services.openssh.settings = {
+    PermitRootLogin = lib.mkForce "no";
+    PasswordAuthentication = lib.mkForce false;
   };
 
 

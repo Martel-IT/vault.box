@@ -9,9 +9,9 @@
 }:
 let
   mkNode = system: config: nixosSystem {
-    inherit system;
     modules = [
-      ({ config, pkgs, ... }: { nixpkgs.overlays = [ vaultbox.overlay ]; })
+      { nixpkgs.hostPlatform = system; }
+      ({ config, pkgs, ... }: { nixpkgs.overlays = [ vaultbox.overlays.default ]; })
       vaultbox.nixosModules
       config
     ];

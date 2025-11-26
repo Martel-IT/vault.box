@@ -9,8 +9,9 @@ in
     
     systemd.services.vault.serviceConfig = {
       # File system isolation
-      ProtectSystem = "strict";     # File system read only
-      ProtectHome = true;           # No /home access
+      # We using mkForce to override defaults set by NixOS service module (read-only).
+      ProtectSystem = mkForce "strict";     # File system read only
+      ProtectHome = mkForce true;           # No /home access
       PrivateTmp = true;            # /tmp isolated
       PrivateDevices = true;        # No access to physical devices
       

@@ -12,7 +12,7 @@
   outputs = { self, nixpkgs, nixie }:
   let
 
-    inputPkgs =  inherit nixpkgs;
+    inputPkgs =  nixpkgs;
 
     build = nixie.lib.flakes.mkOutputSetForCoreSystems inputPkgs;
     pkgs = build (import ./pkgs/mkSysOutput.nix);
@@ -33,5 +33,5 @@
     };
   in
 
-   { inherit overlay; } // pkgs // modules // nodes;
+   { overlays.default = overlay; } // pkgs // modules // nodes;
 }

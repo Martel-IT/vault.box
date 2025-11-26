@@ -27,9 +27,11 @@ with types;
     tools = config.vaultbox.base.cli-tools;
   in (lib.mkIf enabled
   {
+
+    nixpkgs.config.allowUnfree = true; # NOTE (1)  
     # Enable Flakes.
     nix = {
-      package = pkgs.nixFlakes;
+      package = pkgs.nix;
       settings.experimental-features = [ "nix-command" "flakes" ];
     };
 
@@ -39,7 +41,7 @@ with types;
     environment.variables = {
       EDITOR = "emacs";    # NOTE (1)
     };
-    programs.bash.enableCompletion = true;
+    programs.bash.completion.enable = true;
 
     # Only allow to change users and groups through NixOS config.
     users.mutableUsers = false;
@@ -58,3 +60,9 @@ with types;
 
   });
 }
+
+# NOTE
+# ----
+# 1. Vault changed its licence to BSL (Business Source License) so to avoid 
+# error: Package ‘vault-1.20.4’ in /nix/store/g02rq8ap30x3fp8zrz07ip5v1s0pzidn-source/pkgs/by-name/va/vault/package.nix:76 has an unfree license (‘bsl11’), refusing to evaluate.
+# we need to declare allowUnfree = true;
