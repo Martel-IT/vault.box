@@ -3,14 +3,6 @@
 with lib;
 let
   cfg = config.vaultbox.services.vault;
-
-  tlsString = if cfg.tls.enable then ''
-    tls_disable = 0
-    tls_cert_file = "${cfg.tls.certFile}"
-    tls_key_file  = "${cfg.tls.keyFile}"
-  '' else ''
-    tls_disable = 1
-  '';
 in
 {
   config = mkIf cfg.enable {
@@ -19,37 +11,39 @@ in
       enable = true;
       package = pkgs.vault;
 
-      storageBackend = "raft";
+      # 1. ADDRESS
+      address = "0.0.0.0:${toString cfg.port}";
+
+      # 2. STORAGE
+
+      storageBackend = "raft";      
+      storagePath = cfg.storagePath;
       storageConfig = ''
-        path    = "${cfg.storagePath}"
         node_id = "${config.networking.hostName}"
       '';
 
-      # HCL Config.
+      tlsCertFile = if cfg.tls.enable then cfg.tls.certFile else null;
+      tlsKeyFile  = if cfg.tls.enable then cfg.tls.keyFile else null;
+
+      # 4. EXTRA CONFIG (global)
       extraConfig = ''
         ui = true
         disable_mlock = true
-        
-        listener "tcp" {
-          address     = "0.0.0.0:${toString cfg.port}"
-          ${tlsString}
-        }
 
+        # Parametri per il cluster (non per il listener)
         api_addr = "http${if cfg.tls.enable then "s" else ""}://127.0.0.1:${toString cfg.port}"
         cluster_addr = "http${if cfg.tls.enable then "s" else ""}://127.0.0.1:${toString cfg.clusterPort}"
 
-        # Config injection
         ${cfg.extraConfig}
       '';
     };
 
     systemd.tmpfiles.rules = [ 
-
       "d ${cfg.storagePath} 0700 vault vault - -"
       "d /var/lib/vault-storage/certs 0700 vault vault - -"
-
     ];
 
+    # Firewall
     networking.firewall.allowedTCPPorts = [ cfg.port cfg.clusterPort ];
   };
 }
