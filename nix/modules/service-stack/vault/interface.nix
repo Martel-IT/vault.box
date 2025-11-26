@@ -24,5 +24,25 @@ with types;
       default = 8201;
       description = "Raft cluster communication port";
     };
+
+    tls = {
+      enable = mkEnableOption "TLS Listener";
+      certFile = mkOption {
+        type = nullOr path;
+        default = null;
+        description = "Path to the TLS certificate file.";
+      };
+      keyFile = mkOption {
+        type = nullOr path;
+        default = null;
+        description = "Path to the TLS key file.";
+      };
+    };
+
+    extraConfig = mkOption {
+      type = lines;
+      default = "";
+      description = "Extra HCL configuration to append to Vault config.";
+    };
   };
 }

@@ -44,6 +44,8 @@ with types;
     # Only allow to change users and groups through NixOS config.
     users.mutableUsers = false;
 
+    
+
     # Let wheel users run `sudo` without a password.
     security.sudo.wheelNeedsPassword = false;
 

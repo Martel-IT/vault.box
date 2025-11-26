@@ -19,6 +19,7 @@ let
 in {
   nixosConfigurations = {
     aarch64-linux = mkNode "aarch64-linux" ./ec2-aarch64/configuration.nix;
+    x86_64-linux = mkNode "x86_64-linux" ./ec2-x86_64/configuration.nix;
     devm = mkNode "aarch64-linux" ./devm/configuration.nix;
   };
 }

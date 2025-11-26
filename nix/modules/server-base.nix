@@ -45,15 +45,42 @@ in
     };
 
     # Allow remote access through SSH.
+    # SSH hardening
     services.openssh = {
       enable = true;
+      settings = {
+        PasswordAuthentication = false;
+        PubkeyAuthentication = true;
+        PermitRootLogin = lib.mkForce "no";
+        X11Forwarding = false;
+        MaxAuthTries = 3;
+        ClientAliveInterval = 300;
+        ClientAliveCountMax = 2;
+      };
+      extraConfig = ''
+        AllowUsers admin
+        Protocol 2
+        LoginGraceTime 30
+        MaxSessions 10
+        MaxStartups 10:30:60
+      '';
     };
 
-    # Set up a firewall to let in only SSH and HTTP traffic.
-    networking.firewall = {
-      enable = true;
-      allowedTCPPorts = [ cfg.port cfg.clusterPort ];
-    };
+    # Security limits
+    security.pam.loginLimits = [
+      {
+        domain = "*";
+        type = "soft";
+        item = "nofile";
+        value = "65536";
+      }
+      {
+        domain = "*";
+        type = "hard";
+        item = "nofile";
+        value = "65536";
+      }
+    ];
 
     # Bring in our Vault service stack.
     vaultbox.services.vault = {
