@@ -37,7 +37,7 @@ with types;
 
     # Install Emacs and make it the default editor system-wide.
     # Also install the given CLI tools and enable Bash completion.
-    environment.systemPackages = [ pkgs.emacs-nox ] ++ tools;
+    environment.systemPackages = [ pkgs.emacs-nox pkgs.vault ] ++ tools;
     environment.variables = {
       EDITOR = "emacs";    # NOTE (1)
     };
