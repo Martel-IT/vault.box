@@ -7,9 +7,13 @@
       url = "github:c0c0n3/nixie";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    disko = {
+      url = "github:nix-community/disko";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { self, nixpkgs, nixie }:
+  outputs = { self, nixpkgs, nixie, disko }:
   let
 
     inputPkgs =  nixpkgs;
@@ -29,6 +33,7 @@
 
     nodes = import ./nodes {
       nixosSystem = nixpkgs.lib.nixosSystem;
+      disko = disko;
       vaultbox = self; # Passes the flake itself
     };
   in

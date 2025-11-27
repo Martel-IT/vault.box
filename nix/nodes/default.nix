@@ -5,13 +5,16 @@
   # `lib.nixosSystem` in the selected Nixpkgs.
   nixosSystem,
   # The Flake itself.
-  vaultbox
+  vaultbox,
+  # Disko for disk management.
+  disko
 }:
 let
   mkNode = system: config: nixosSystem {
     modules = [
       { nixpkgs.hostPlatform = system; }
       ({ config, pkgs, ... }: { nixpkgs.overlays = [ vaultbox.overlays.default ]; })
+      disko.nixosModules.disko
       vaultbox.nixosModules
       config
     ];
