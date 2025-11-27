@@ -16,7 +16,7 @@ in {
   boot.loader.efi.canTouchEfiVariables = true;
 
   fileSystems."${vault-data-mount-dir}" = {
-    device = "/dev/disk/by-partlabel/data";
+    device = "/dev/disk/by-label/data";
     fsType = "ext4";
     options = [ "defaults" "noatime" ]; 
   };

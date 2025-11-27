@@ -13,6 +13,7 @@ let
 in {
 
   imports = [ "${modulesPath}/virtualisation/amazon-image.nix" ];
+  ec2.efi = true;
 
   time.timeZone = "Europe/Amsterdam";
   system.stateVersion = "25.05";
@@ -20,7 +21,7 @@ in {
   networking.hostName = "vaultsrv-01";
 
   fileSystems."${vault-data-mount-dir}" = {
-    device = "/dev/disk/by-partlabel/data";
+    device = "/dev/disk/by-label/data";
     fsType = "ext4";
     options = [ "defaults" "noatime" ]; 
   };
