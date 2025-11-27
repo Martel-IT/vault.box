@@ -17,7 +17,7 @@ in
       # 1. AUTO-ENROLLMENT
       authKeyFile = "/var/lib/tailscale/ts-auth-key.pvt";
 
-      # 2.  EXTRA
+      # 2. PARAMETERS EXTRA
       # --ssh: Enables Tailscale SSH 
       # --hostname: Enforces hostname in Tailscale admin panel
       extraUpFlags = [ 
@@ -42,7 +42,7 @@ in
       wants = [ "tailscaled.service" ];
       wantedBy = [ "multi-user.target" ];
       
-      path = [ pkgs.tailscale pkgs.jq ];
+      path = with pkgs; [ tailscale jq ];
       
       serviceConfig = {
         Type = "oneshot";

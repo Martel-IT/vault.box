@@ -15,7 +15,7 @@ in {
   time.timeZone = "Europe/Amsterdam";
   system.stateVersion = "25.05";
 
-  networking.hostName = "vaultsrv-01";
+  networking.hostName = "vaultbox-01";
 
   fileSystems."${cfg.dataDir}" = {
     device = "/dev/disk/by-label/data";

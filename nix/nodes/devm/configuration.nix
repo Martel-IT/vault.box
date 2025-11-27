@@ -10,7 +10,7 @@ in {
   time.timeZone = "Europe/Amsterdam";
   system.stateVersion = "25.05";
 
-  networking.hostName = "vaultsrv-01";
+  networking.hostName = "vaultbox-dev";
 
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
