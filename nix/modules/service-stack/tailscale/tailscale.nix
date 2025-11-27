@@ -15,7 +15,7 @@ in
       enable = true;
       
       # 1. AUTO-ENROLLMENT
-      authKeyFile = "/var/lib/tailscale/auth-key";
+      authKeyFile = "/var/lib/tailscale/ts-auth-key.pvt";
 
       # 2. PARAMETRI EXTRA
       # --ssh: Enables Tailscale SSH 
