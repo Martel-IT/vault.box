@@ -7,6 +7,12 @@ with types;
   options.vaultbox.services.vault = {
     enable = mkEnableOption "HashiCorp Vault Service";
 
+    dataDir = mkOption {
+      type = path;
+      default = "/var/lib/vault-storage";
+      description = "Base directory for Vault data (mount point).";
+    };
+
     storagePath = mkOption {
       type = path;
       default = "/var/lib/vault";

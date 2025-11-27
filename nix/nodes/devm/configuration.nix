@@ -1,7 +1,7 @@
 { config, modulesPath, pkgs, lib, ... }:
 let
   
-  vault-data-mount-dir = "/var/lib/vault-storage";
+  cfg = config.vaultbox.services.vault;
 
 in {
 
@@ -15,7 +15,7 @@ in {
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
-  fileSystems."${vault-data-mount-dir}" = {
+  fileSystems."${cfg.dataDir}" = {
     device = "/dev/disk/by-label/data";
     fsType = "ext4";
     options = [ "defaults" "noatime" ]; 
@@ -33,7 +33,7 @@ in {
     ];
   };
 
-  users.users.root.password = "abc123"; # Password: "root"
+  users.users.root.password = "abc123"; # Password: "root" -- DO NOT USE THIS IN PRODUCTION SYSTEMS!!!!!!!!!!
   users.mutableUsers = lib.mkForce true; # Allows to use passwd to change passwords
 
   services.openssh.settings = {
@@ -50,7 +50,7 @@ in {
   vaultbox = {
     server.enable = true;
     services.vault = {
-      storagePath = "${vault-data-mount-dir}/raft-data";
+      storagePath = "${cfg.dataDir}/raft-data";
       # tls = {
       #   enable = true;
       #   certFile = "/var/lib/vault-storage/certs/vault.crt";

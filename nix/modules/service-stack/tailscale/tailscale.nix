@@ -17,7 +17,7 @@ in
       # 1. AUTO-ENROLLMENT
       authKeyFile = "/var/lib/tailscale/ts-auth-key.pvt";
 
-      # 2. PARAMETRI EXTRA
+      # 2.  EXTRA
       # --ssh: Enables Tailscale SSH 
       # --hostname: Enforces hostname in Tailscale admin panel
       extraUpFlags = [ 

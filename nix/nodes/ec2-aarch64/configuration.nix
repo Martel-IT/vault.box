@@ -1,7 +1,7 @@
 { config, modulesPath, pkgs, lib, ... }:
 let
   
-  vault-data-mount-dir = "/var/lib/vault-storage";
+  cfg = config.vaultbox.services.vault;
 
 in {
 
@@ -17,7 +17,7 @@ in {
 
   networking.hostName = "vaultsrv-01";
 
-  fileSystems."${vault-data-mount-dir}" = {
+  fileSystems."${cfg.dataDir}" = {
     device = "/dev/disk/by-label/data";
     fsType = "ext4";
     options = [ "defaults" "noatime" ]; 
@@ -44,16 +44,16 @@ in {
   vaultbox = {
     server.enable = true;
     services.vault = {
-      storagePath = "${vault-data-mount-dir}/raft-data";
+      storagePath = "${cfg.dataDir}/raft-data";
       tls = {
         enable = true;
-        certFile = "/var/lib/vault-storage/certs/vault.crt";
-        keyFile  = "/var/lib/vault-storage/certs/vault.key";
+        certFile = "${cfg.dataDir}/certs/vault.crt";
+        keyFile  = "${cfg.dataDir}/certs/vault.key";
       };
     };
     swapfile = {
       enable = true;
-      size = 2048;
+      size = 4096;
     };
   };
 }
