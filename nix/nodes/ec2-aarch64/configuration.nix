@@ -20,7 +20,7 @@ in {
   fileSystems."${cfg.dataDir}" = {
     device = "/dev/disk/by-label/data";
     fsType = "ext4";
-    options = [ "defaults" "noatime" ]; 
+    options = [ "defaults" "noatime" "nofail" ]; 
   };
 
   # Automatic security updates

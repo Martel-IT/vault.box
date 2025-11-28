@@ -2,7 +2,7 @@
   disko.devices = {
     disk = {
       
-      # --- DISCO 1: OS & BOOT (Root Volume) ---
+      # --- DISK 1: OS & BOOT (Root Volume) ---
       main = {
         type = "disk";
         device = "/dev/nvme0n1";
@@ -14,7 +14,7 @@
               priority = 1;
               name = "ESP";
               start = "1M";
-              end = "1024M";
+              end = "512M";
               type = "EF00";
               content = {
                 type = "filesystem";
@@ -38,7 +38,7 @@
         };
       };
 
-      # --- DISCO 2: DATA VaultBox
+      # --- DISK 2: DATA VaultBox
       data = {
         type = "disk";
         device = "/dev/nvme1n1";
@@ -47,13 +47,13 @@
           partitions = {
             vaultbox_data = {
               size = "100%";
-              content = {
+                content = {
                 type = "filesystem";
                 format = "ext4";
                 mountpoint = null;
                 extraArgs = [ "-L" "data" ];
+                };
               };
-            };
           };
         };
       };

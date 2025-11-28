@@ -22,12 +22,13 @@ in {
   time.timeZone = "Europe/Amsterdam";
   system.stateVersion = "25.05";
 
+
   networking.hostName = "vaultbox-01";
 
   fileSystems."${cfg.dataDir}" = {
     device = "/dev/disk/by-label/data";
     fsType = "ext4";
-    options = [ "defaults" "noatime" ]; 
+    options = [ "defaults" "noatime" "nofail" ]; 
   };
 
   # Automatic security updates

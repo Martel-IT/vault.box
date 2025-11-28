@@ -86,7 +86,6 @@ in
           
           if [ "$STATE" == "Running" ]; then
              # 2. Check Real Connectivity (DNS)
-             # Proviamo a risolvere un dominio pubblico per essere sicuri che la rete c'è
              if getent hosts google.com >/dev/null 2>&1 || ping -c1 8.8.8.8 >/dev/null 2>&1; then
                 TS_DOMAIN=$(echo "$STATUS" | jq -r .Self.DNSName | sed 's/\.$//')
                 echo "Tailscale is UP and Network/DNS is working."
@@ -118,21 +117,21 @@ in
         if [[ "$TS_DOMAIN" == *".ts.net" ]]; then
             echo "Requesting Tailscale Certs for $TS_DOMAIN..."
             
-            # Retry loop per il certificato (5 tentativi)
+            # loop for certs
             CERT_SUCCESS=false
             for i in {1..5}; do
               if tailscale cert --cert-file "$CERT_FILE" --key-file "$KEY_FILE" "$TS_DOMAIN"; then
-                 echo "Certificati ottenuti con successo!"
+                 echo "Certificate obtained successfully!"
                  CERT_SUCCESS=true
                  break
               else
-                 echo "Errore richiesta certificati (tentativo $i/5). Attendo..."
+                 echo "ERROR: Requesting certificates (tentativo $i/5). Waiting..."
                  sleep 5
               fi
             done
             
             if [ "$CERT_SUCCESS" = false ]; then
-               echo "CRITICAL: Impossibile ottenere certificati Tailscale. Esco con errore per far ripartire il servizio."
+               echo "CRITICAL: Not able to fetch certs from tailscale. Quitting..."
                exit 1
             fi
         else
@@ -152,6 +151,17 @@ in
         echo "--- [Vault Setup] Complete. API Addr set to: https://$TS_DOMAIN:8200 ---"
       '';
     };
+
+    environment.interactiveShellInit = ''
+      if [ -f /var/lib/vault-storage/vault.env ]; then
+         # Reads VAULT_API_ADDR from .env file and exports as VAULT_ADDR
+         api_addr=$(grep VAULT_API_ADDR /var/lib/vault-storage/vault.env | cut -d= -f2)
+         
+         if [ -n "$api_addr" ]; then
+           export VAULT_ADDR="$api_addr"
+         fi
+      fi
+    '';
 
     systemd.services.vault = {
       serviceConfig.EnvironmentFile = "/var/lib/vault-storage/vault.env";
