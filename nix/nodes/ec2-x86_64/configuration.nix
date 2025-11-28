@@ -18,8 +18,6 @@ in {
   ];
 
   ec2.efi = true;
-  
-
 
   time.timeZone = "Europe/Amsterdam";
   system.stateVersion = "25.05";

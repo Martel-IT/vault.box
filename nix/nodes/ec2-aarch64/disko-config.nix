@@ -5,7 +5,7 @@
       # --- DISK 1: OS & BOOT (Root Volume) ---
       main = {
         type = "disk";
-        device = "/dev/sda";
+        device = "/dev/nvme0n1";
         content = {
           type = "gpt";
           partitions = {
@@ -23,6 +23,7 @@
                 mountOptions = [ "defaults" ];
               };
             };
+
             
             #Root (OS)
             root = {
@@ -41,12 +42,17 @@
       # --- DISK 2: DATA VaultBox
       data = {
         type = "disk";
-        device = "/dev/sdb";
+        device = "/dev/nvme1n1";
         content = {
           type = "gpt";
           partitions = {
             vaultbox_data = {
               size = "100%";
+              content = {
+                type = "luks";
+                name = "crypted-data";
+                settings.allowDiscards = true;
+                passwordFile = "/tmp/disk-encryption.key";
                 content = {
                 type = "filesystem";
                 format = "ext4";
@@ -55,6 +61,7 @@
                 };
               };
             };
+          };
         };
       };
   };
