@@ -48,11 +48,6 @@
           partitions = {
             vaultbox_data = {
               size = "100%";
-              content = {
-                type = "luks";
-                name = "crypted-data";
-                settings.allowDiscards = true;
-                passwordFile = "/tmp/disk-encryption.key";
                 content = {
                 type = "filesystem";
                 format = "ext4";
