@@ -37,7 +37,7 @@ in
       '';
     };
 
-    environment.systemPackages = [ pkgs.vault-bin ];
+    environment.systemPackages = with pkgs; [ vault-bin ];
 
     # --- VAULT SETUP SERVICE ---
     # Runs before Vault to:
@@ -153,9 +153,9 @@ in
     };
 
     environment.interactiveShellInit = ''
-      if [ -f /var/lib/vault-storage/vault.env ]; then
+      if [ -f ${cfg.dataDir}/vault.env ]; then
          # Reads VAULT_API_ADDR from .env file and exports as VAULT_ADDR
-         api_addr=$(grep VAULT_API_ADDR /var/lib/vault-storage/vault.env | cut -d= -f2)
+         api_addr=$(grep VAULT_API_ADDR ${cfg.dataDir}/vault.env | cut -d= -f2)
          
          if [ -n "$api_addr" ]; then
            export VAULT_ADDR="$api_addr"

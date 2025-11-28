@@ -19,6 +19,9 @@ in {
 
   ec2.efi = true;
 
+  boot.loader.systemd-boot.enable = true;
+  boot.loader.efi.canTouchEfiVariables = true;
+
   time.timeZone = "Europe/Amsterdam";
   system.stateVersion = "25.05";
 
@@ -28,7 +31,7 @@ in {
   fileSystems."${cfg.dataDir}" = {
     device = "/dev/disk/by-label/data";
     fsType = "ext4";
-    options = [ "defaults" "noatime" ]; 
+    options = [ "defaults" "noatime" "nofail" ]; 
   };
 
   # Automatic security updates
