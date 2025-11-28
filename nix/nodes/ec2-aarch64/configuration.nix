@@ -12,9 +12,6 @@ in {
 
   ec2.efi = true;
 
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-
   time.timeZone = "Europe/Amsterdam";
   system.stateVersion = "25.05";
 

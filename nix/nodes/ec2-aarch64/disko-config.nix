@@ -5,7 +5,7 @@
       # --- DISK 1: OS & BOOT (Root Volume) ---
       main = {
         type = "disk";
-        device = "/dev/nvme0n1";
+        device = "/dev/sda";
         content = {
           type = "gpt";
           partitions = {
@@ -41,7 +41,7 @@
       # --- DISK 2: DATA VaultBox
       data = {
         type = "disk";
-        device = "/dev/nvme1n1";
+        device = "/dev/sdb";
         content = {
           type = "gpt";
           partitions = {
